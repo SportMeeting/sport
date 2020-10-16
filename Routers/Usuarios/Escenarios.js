@@ -3,7 +3,6 @@ const Escenarios = require('../../Models/Escenarios');
 const { verificarToken } = require('../../middleware/verificarToken');
 const uniqid = require('uniqid');
 const moment = require('moment-timezone');
-const file = require('express-fileupload');
 
 const router = express.Router();
 
@@ -61,6 +60,7 @@ router.post('/excenario/upload', [verificarToken], (req, res) => {
             if (mime.includes('image') || mime.includes('Image')) {
                 console.log('Despues')
                 const media = new Escenarios({
+                    creador: req.usuario._id,
                     nombre: req.get('x-nombre'),
                     deporte: req.get('x-deporte'),
                     turnos: req.get('x-turnos'),
@@ -87,6 +87,30 @@ router.post('/excenario/upload', [verificarToken], (req, res) => {
             }
         })
     }
+})
+
+
+
+router.get('/excenarios', [verificarToken], (req, res) => {
+
+    Escenarios.find({ creador: req.usuario._id })
+        .lean()
+        .exec((err, docs) => {
+            if (err) {
+                return res.json({
+                    exe: false,
+                    error: err
+                })
+            }
+
+
+            return res.json({
+                exe: true,
+                response: docs
+            })
+        })
+
+
 })
 
 
