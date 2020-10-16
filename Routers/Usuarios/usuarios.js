@@ -111,6 +111,81 @@ router.get('/usuarios/:termino', [verificarToken], (req, res) => {
         })
 })
 
+
+router.post('/loginUser', (req, res) => {
+    console.log('Entramos')
+    let body = req.body;
+    const dispositivo = req.body.dispositivo;
+
+    if (typeof body.clave === 'undefined' || body.clave === '') {
+        //res.status(200)
+        return res.json({
+            exe: false,
+            error: {
+                message: 'Debe especificar una contraseña válida'
+            }
+        })
+    }
+
+    console.log('Bien')
+
+    Usuarios.findOne({ $and: [{ nombreusuario: body.usuario }, { clave: body.clave }] })
+        .exec((err, usuario) => {
+            if (err) {
+                return res.json({
+                    exe: false,
+                    msg: 'Hola que hace',
+                    error: {
+                        message: err
+                    }
+                })
+            }
+
+            if (usuario) {
+
+                const _id = usuario._id;
+
+                Usuarios.findByIdAndUpdate(_id, { usuarioID: dispositivo }, { new: true }, (errr, usuarioe) => {
+                    if (err) {
+                        return res.json({
+                            exe: false,
+                            msg: 'Hola que hace',
+                            error: {
+                                message: errr
+                            }
+                        })
+                    }
+
+
+
+                    let token = jwt.sign({ usuario: usuarioe }, process.env.SECRET, { expiresIn: 60 * 60 * 24 * 365 });
+
+                    return res.json({
+                        exe: true,
+                        response: usuarioe,
+                        token
+                    })
+
+
+
+                })
+
+            } else {
+                return res.json({
+                    exe: false,
+                    usuario,
+                    error: {
+                        message: 'Credenciales incorrectas'
+                    }
+                })
+            }
+
+
+
+        })
+})
+
+
 router.get('/usuarios', [verificarToken], (req, res) => {
     Usuarios.find({}).exec((err, usuario) => {
         if (err) {

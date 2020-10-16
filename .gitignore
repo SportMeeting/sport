@@ -1,1 +1,4 @@
 /node_modules
+
+
+sudo ufw allow from 157.245.174.12/32 to any port 27017  
