@@ -33,7 +33,7 @@ router.post('/escenario/nuevo', (req, res) => {
 })
 
 
-router.post('/excenario/upload', [verificarToken], (req, res) => {
+router.post('/escenario/upload', [verificarToken], (req, res) => {
 
 
     if (!req.files) {

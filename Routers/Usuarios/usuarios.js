@@ -335,6 +335,45 @@ router.get('/ciudad', (req, res) => {
         })
 })
 
+
+
+router.delete('/ciudad', (req, res) => {
+    Ciudades.deleteMany({})
+        .lean()
+        .exec((err, docs) => {
+            if (err) {
+                return res.json({
+                    exe: false,
+                    err
+                })
+            }
+
+            return res.json({
+                exe: true,
+                response: docs
+            })
+        })
+})
+
+
+router.delete('/paises', (req, res) => {
+    Paises.deleteMany({})
+        .lean()
+        .exec((err, docs) => {
+            if (err) {
+                return res.json({
+                    exe: false,
+                    err
+                })
+            }
+
+            return res.json({
+                exe: true,
+                response: docs
+            })
+        })
+})
+
 router.put('/codigos', (req, res) => {
     const codigo = req.body.codigo;
 
