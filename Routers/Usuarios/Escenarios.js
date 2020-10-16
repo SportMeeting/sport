@@ -6,10 +6,11 @@ const moment = require('moment-timezone');
 
 const router = express.Router();
 
-router.post('/escenarios', (req, res) => {
+router.post('/escenario/nuevo', (req, res) => {
     let body = req.body;
 
     const miEcenario = new Escenarios({
+        creador: req.usuario._id,
         nombre: body.nombre,
         deporte: body.deporte,
         turnos: body.turnos,
