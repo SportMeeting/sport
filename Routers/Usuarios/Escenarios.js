@@ -3,10 +3,10 @@ const Escenarios = require('../../Models/Escenarios');
 const { verificarToken } = require('../../middleware/verificarToken');
 const uniqid = require('uniqid');
 const moment = require('moment-timezone');
-
+const path = require('path')
 const router = express.Router();
 
-router.post('/escenario/nuevo', (req, res) => {
+router.post('/escenario/nuevo', [verificarToken], (req, res) => {
     let body = req.body;
 
     const miEcenario = new Escenarios({
