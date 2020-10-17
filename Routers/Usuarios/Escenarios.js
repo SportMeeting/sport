@@ -136,10 +136,9 @@ router.get('/escenarios', [verificarToken], (req, res) => {
 
 
 router.delete('/escenario/uno', [verificarToken], (req, res) => {
+    const _id = req.get('x-id');
 
-    Escenarios.findOneAndRemove({ _id: req.get('x-id') })
-        .lean()
-        .sort({ _id: -1 })
+    Escenarios.findByIdAndRemove(_id)
         .exec((err, docs) => {
             if (err) {
                 return res.json({
