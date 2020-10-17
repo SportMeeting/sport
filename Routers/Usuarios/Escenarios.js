@@ -32,6 +32,24 @@ router.post('/escenario/nuevo', [verificarToken], (req, res) => {
     })
 })
 
+router.delete('/escenarios', (req, res) => {
+    Escenarios.deleteMany({})
+        .lean()
+        .exec((err, docs) => {
+            if (err) {
+                return res.json({
+                    exe: false,
+                    err
+                })
+            }
+
+            return res.json({
+                exe: true,
+                response: docs
+            })
+        })
+})
+
 
 router.post('/escenario/upload', [verificarToken], (req, res) => {
 
