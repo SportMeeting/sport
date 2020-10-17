@@ -110,7 +110,7 @@ router.post('/escenario/upload', [verificarToken], (req, res) => {
 
 
 
-router.get('/excenarios', [verificarToken], (req, res) => {
+router.get('/escenarios', [verificarToken], (req, res) => {
 
     Escenarios.find({ creador: req.usuario._id })
         .lean()
