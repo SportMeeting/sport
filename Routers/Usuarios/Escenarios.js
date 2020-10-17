@@ -114,6 +114,30 @@ router.get('/escenarios', [verificarToken], (req, res) => {
 
     Escenarios.find({ creador: req.usuario._id })
         .lean()
+        .sort({ _id: -1 })
+        .exec((err, docs) => {
+            if (err) {
+                return res.json({
+                    exe: false,
+                    error: err
+                })
+            }
+
+
+            return res.json({
+                exe: true,
+                response: docs
+            })
+        })
+
+
+})
+
+
+
+router.delete('/escenarios', [verificarToken], (req, res) => {
+
+    Escenarios.deleteMany({})
         .exec((err, docs) => {
             if (err) {
                 return res.json({
